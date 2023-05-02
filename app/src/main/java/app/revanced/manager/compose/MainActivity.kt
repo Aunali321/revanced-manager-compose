@@ -8,11 +8,20 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.compose.destination.Destination
 import app.revanced.manager.compose.domain.manager.PreferencesManager
+import app.revanced.manager.compose.ui.component.settings.AboutScreen
+import app.revanced.manager.compose.ui.component.settings.DownloaderSettings
+import app.revanced.manager.compose.ui.component.settings.GeneralSettings
+import app.revanced.manager.compose.ui.component.settings.ImportExportSettings
+import app.revanced.manager.compose.ui.component.settings.SourcesSettings
+import app.revanced.manager.compose.ui.component.settings.UpdatesSettings
 import app.revanced.manager.compose.ui.screen.DashboardScreen
+import app.revanced.manager.compose.ui.screen.SettingsScreen
 import app.revanced.manager.compose.ui.theme.ReVancedManagerTheme
 import app.revanced.manager.compose.ui.theme.Theme
 import dev.olshevski.navigation.reimagined.AnimatedNavHost
 import dev.olshevski.navigation.reimagined.NavBackHandler
+import dev.olshevski.navigation.reimagined.navigate
+import dev.olshevski.navigation.reimagined.pop
 import dev.olshevski.navigation.reimagined.rememberNavController
 import org.koin.android.ext.android.inject
 
@@ -38,7 +47,58 @@ class MainActivity : ComponentActivity() {
                 ) { destination ->
                     when (destination) {
                         is Destination.Dashboard -> {
-                            DashboardScreen()
+                            DashboardScreen(onSettingsClick = {
+                                navController.navigate(Destination.Settings)
+                            })
+                        }
+
+                        is Destination.Settings -> {
+                            SettingsScreen(
+                                onBackClick = { navController.pop() },
+                                navigate = { navController.navigate(it) }
+                            )
+                        }
+
+                        is Destination.GeneralSettings -> {
+                            GeneralSettings(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
+                        }
+
+                        is Destination.UpdatesSettings -> {
+                            UpdatesSettings(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
+                        }
+
+                        is Destination.SourcesSettings -> {
+                            SourcesSettings(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
+                        }
+
+                        is Destination.DownloaderSettings -> {
+                            DownloaderSettings(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
+                        }
+
+                        is Destination.ImportExportSettings -> {
+                            ImportExportSettings(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
+                        }
+
+                        is Destination.About -> {
+                            AboutScreen(
+                                onBackClick = { navController.pop() },
+                                preferences = prefs
+                            )
                         }
                     }
                 }
